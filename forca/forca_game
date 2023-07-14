@@ -1,0 +1,74 @@
+using System;
+
+class Program
+{
+    static void Main()
+    {
+        string[] palavras = { "ABACAXI", "BANANA", "MELANCIA", "MORANGO", "LARANJA" };
+        string palavraSelecionada = SelecionarPalavra(palavras);
+        char[] letrasDescobertas = new char[palavraSelecionada.Length];
+
+        for (int i = 0; i < letrasDescobertas.Length; i++)
+        {
+            letrasDescobertas[i] = '_';
+        }
+
+        int tentativas = 6;
+        bool jogoAcabou = false;
+
+        Console.WriteLine("Bem-vindo ao Jogo da Forca!");
+        Console.WriteLine("Adivinhe a palavra:");
+
+        while (!jogoAcabou)
+        {
+            Console.WriteLine();
+            Console.WriteLine($"Palavra: {string.Join(" ", letrasDescobertas)}");
+            Console.WriteLine($"Tentativas restantes: {tentativas}");
+            Console.Write("Digite uma letra: ");
+            char letra = Console.ReadKey().KeyChar;
+
+            if (!VerificarLetra(palavraSelecionada, letrasDescobertas, letra))
+            {
+                tentativas--;
+            }
+
+            if (tentativas == 0)
+            {
+                Console.WriteLine("\nVocê perdeu! A palavra correta era: " + palavraSelecionada);
+                jogoAcabou = true;
+            }
+
+            if (!letrasDescobertas.Contains('_'))
+            {
+                Console.WriteLine("\nParabéns! Você acertou a palavra: " + palavraSelecionada);
+                jogoAcabou = true;
+            }
+        }
+
+        Console.WriteLine("\nObrigado por jogar! Pressione qualquer tecla para sair...");
+        Console.ReadKey();
+    }
+
+    static string SelecionarPalavra(string[] palavras)
+    {
+        Random random = new Random();
+        int indice = random.Next(palavras.Length);
+        return palavras[indice];
+    }
+
+    static bool VerificarLetra(string palavra, char[] letrasDescobertas, char letra)
+    {
+        bool letraEncontrada = false;
+
+        for (int i = 0; i < palavra.Length; i++)
+        {
+            if (palavra[i] == letra)
+            {
+                letrasDescobertas[i] = letra;
+                letraEncontrada = true;
+            }
+        }
+
+        return letraEncontrada;
+    }
+}
